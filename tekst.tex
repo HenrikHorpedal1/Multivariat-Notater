@@ -22,7 +22,7 @@ T = XP + E, \quad \hat{X} = TP^T
 \newline
 
 \subsubsection{Deciding the number of components}
-\subsubsection{Outliardetection}
+\subsubsection{Outlier detection}
 
 
 
@@ -102,7 +102,7 @@ L2 regularization adds the sum of the squares of the parameters to the cost func
 \end{equation}
 
 \subsection{Comparison between L1 and L2}
-The L1 function look like a diamond and the L2 function look like a cone. The L1 function have higher chance of driving $\theta$ to zero, which is beneficial reducing model complexity. The L2 function will drive $\theta$ close to zero but not exactly zero. The L1 function is more computationally efficient to solve than the L2 function since J will in many cases remain convex.
+The L1 function look like a diamond and the L2 function look like a cone. The L1 function have higher chance of driving $\theta$ to zero, which is beneficial reducing model complexity. The L2 function will drive $\theta$ close to zero but not exactly zero. The L1 function is more computationally efficient to solve than the L function since J will in many cases remain convex.
 
 \section{Preformance Metrics}
 TODO
@@ -121,8 +121,6 @@ The maximum likelihood estimator is the value of $\theta$ that maximizes the lik
     l(\theta) = \log(L(\theta))
 \end{equation}
 
-
-
 \section{Sampling}
 Sampling is the process of selecting a subset of individual or items for a larger population for the purpose of analysis or study. We want to get a good represenation of the population with only a subset of the population. \newline
 \subsubsection{Simple Random Sampling}
@@ -136,9 +134,45 @@ In cluster sampling, the population is divided into clusters and then a simple r
 
 
 \section{Bias-Variance Tradeoff}
+\textbf{Ockham's razor} states that the simplest solution is often the best. The bias-variance tradeoff is about finding the right balance between bias and variance. \newline
+Bias variance tradeoff can be calculated from the MSE:
+\begin{equation}
+    \mathbf{
+    MSE = E[(\hat{\theta} - \theta)^2] = Bias^2 + Variance
+    }
+\end{equation}
+Choosing model order is tightly connected to the bias-variance tradeoff. A model with high bias will underfit the data and a model with high variance will overfit the data. \newline
+Regularization is reducing the variance by adding some bias. 
+
 
 
 \section{DoE - \textcolor{green}{D}esign \textcolor{green}{o}f \textcolor{green}{E}xperiments}
+Design of Experiments (DoE) is the pre-planned, systematic variation of
+controllable experimental factors that induce a response in a system. The
+factors are measured in such a way that the minimum effort is required to
+gain a maximum amount of information.
+
+The typical three stages of DoE are:
+\begin{enumerate}
+    \item \textbf{First screening}: The aim is to find main effect, \textbf{fractional factorial}.
+    \item \textbf{Screening}: The aim is to find the main effects and interactions, \textbf{factorial}.
+    \item \textbf{Optimization or oprtimal design }: Find optimal settings for a response surface, or design with constraints.
+\end{enumerate}
+
+\subsection{Experimental design vs OVAT - \textcolor{green}{O}ne \textcolor{green}{V}ariable \textcolor{green}{A}t a \textcolor{green}{T}ime}
+In OVAT you change one variable at a time and keep the others constant. In this way you can not see the interactions between the variables. In experimental design you change all the variables at the same time. This is more efficient and you can see the interactions between the variables. \newline
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{pictures/OVAT_vs_ED.png}
+    \caption{OVAT vs ED}
+    \label{fig:OVAT_vs_ED}
+\end{figure}
+
+In full factorial, if you have two levels, high and low of each variable, the number of experiments needed is $2^n$ where n is the number of variables. \newline
+In fractional factorial you only test $2^{n-1}$ experiments. \newline
+Additionally it can be smart to add center samples to estimate curvature and estimate error variance. Antoher smart thing is to do replicated experiments to estimate the error variance. \newline
+
+\section{ANOVA - \textcolor{green}{AN}alysis \textcolor{green}{O}f \textcolor{green}{VA}riance}
 
 \section{MLR - \textcolor{blue}{M}ultiple \textcolor{blue}{L}inear \textcolor{blue}{R}egression}
 MLR is used to model the relationship between a dependent variable and one or more independent variables. The model is defined as:
@@ -150,7 +184,6 @@ MLR is used to model the relationship between a dependent variable and one or mo
 The parameters $\theta$ are estimated by minimizing the sum of the squares of the differences between the observed and predicted values. This is in practise the same as LS with a linear model; done by solving the normal equations \ref{eq:normal_equations}.
 It is worth mentioning that if you have correlated X-variables the regression coefficient will not correspond to the true effect of the variable. (A negative $\theta_i$ does not mean that the variable has a negative effect on  y). You also have to have at least as many samples as variables in MLR. \newline
 
-\section{ANOVA - \textcolor{green}{AN}alysis \textcolor{green}{O}f \textcolor{green}{VA}riance}
 
 \section{PCR - \textcolor{red}{P}rincipal \textcolor{red}{C}omponent \textcolor{red}{R}egression}
 The main idea of PCR is to use PCA to reduce the dimensionality of the data and then use MLR on the reduced data. The steps are:
@@ -186,11 +219,29 @@ where:
 
 \section{Validation}
 
+\subsection{External Validation}
+External validation is validating that the model agrees with theory, that you can see causality.
+\subsection{Internal Validation}
+Internal validation is based on numerical methods like cross validation, test set validation and cross model validation. \newline
+
+
+\section{Cross Validation}
+
 \section{Outlier Detection}
 
 \section{Feature Selection}
 
 \section{SVM - \textcolor{blue}{S}upport \textcolor{blue}{V}ector \textcolor{blue}{M}achines}
+SVM is an algorithm that can be used to both regression and classification. It is suited for non-linear problems and non-homogeneous classes. The main idea is to find the hyperplane that maximizes the margin between the classes. 
+\indent \textbf{Hyperplane} is the decision boundary that is used to separate the data points of different classes in a feature space. In the case of linear classifications, it will be a linear equation i.e. wx+b = 0.
+\newline \indent \textbf{Margin} is the distance between the support vector and hyperplane. The main objective of the support vector machine algorithm is to maximize the margin.  The wider margin indicates better classification performance.
+\newline \indent \textbf{Support Vectors}: Support vectors are the closest data points to the hyperplane, which makes a critical role in deciding the hyperplane and margin.
+\newline \indent \textbf{Kernel Trick}: In many cases it is impossible to separate the classes with a linear hyperplane. The data is therefor mapped into a higher dimension where it is more sepparable. The kernel trick is used to calculate the innerproducts without explicitly doing the mapping the samples into the higher dimension. A generic kernel function is defined as:
+\begin{equation}
+    K(x_a, x_b; \theta) = \text{function doing the implicit evaluation of the inner product}
+\end{equation}
+Where $\theta$ is a kernal hyper parameter.
+
 
 \section{Timeseries Forecasting}
 
@@ -410,6 +461,18 @@ Logistic regression can be used for digit recognition. The algorithm is esential
 \end{equation}
 
 \section{Neural networks}
+Neural networks are essentially a series of logistic regression models. Neural networks also has the ability to approximate any countinuous function. This is known as the \textbf{universal approximation theorem}. The most common activation functions are the sigmoid function, the hyperbolic tangent function and the rectified linear unit function. The sigmoid function is used in the output layer of a binary classification problem. The hyperbolic tangent function is used in the output layer of a multi-class classification problem. The rectified linear unit function is used in the hidden layers of the network. If you remove the activation function you are essentionally left with a linear model. \newline
+The gradient is calculated by an algorithm called \textbf{backpropagation}. Neural network can handle non linear relationships between the input and output variables. It is woth mentioning that  they can be prone to overfitting and can be computationally expensive to train. It can also be difficult to find a global minimum. \newline
+To avoid overfitting you can use \textbf{dropout} which is a technique where you randomly set a fraction of the neurons to zero. $L_1$ and $L_2$ regularization can also be used. \newline
+\textbf{Early stopping} is a technique where you stop training the model when the validation error starts to increase. \newline
+Because of chain rule an unwanted effect of the backpropagation algorithm is the \textbf{vanishing gradient problem}. This can be solved by using ReLU instead of the sigmoid function. \newline
+Another drawback og neural networks is that they are often considered as black boxes, hard to interpret.
+
+\subsection{CNN - \textcolor{blue}{C}onvolutional \textcolor{blue}{N}eural \textcolor{blue}{N}etworks}
+CNN is a type of neural network that is most used in image recognition. The main idea is to use convolutional layers to extract features from the image. \textbf{max pooling} is used to reduce the dimensionality of the image. The output of the convolutional layers is then fed into a fully connected layer which can be used for classification. \newline
+
+\subsection{Autoencoders}
+Autoencoders are a type of neural network that is used for dimensionality reduction. The main idea is to train the network to output the input. The network is trained to minimize the difference between the input and the output. The network is trained to learn a compressed representation of the input. The compressed representation is called the \textbf{latent space}. The latent space can be used for clustering, classification and anomaly detection. \newline
 
 
 
